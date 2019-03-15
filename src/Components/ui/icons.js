@@ -14,7 +14,11 @@ export const CityLogo = (props)=>{
      </div>
 
      if(props.link){
-       return(<Link to={props.link} className="link_logo">{template}</Link>);
+        return (
+            <Link to={props.linkto}>
+                {template}
+            </Link>
+        )
      }else{
         return template;
      }

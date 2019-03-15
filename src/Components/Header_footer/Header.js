@@ -28,7 +28,7 @@ class Header extends Component {
                         <div className="header_logo">
                             <CityLogo
                                 link={true}
-                                linkTo="/"
+                                linkto="/"
                                 width="70px"
                                 height="70px"
 
