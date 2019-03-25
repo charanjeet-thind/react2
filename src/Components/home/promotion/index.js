@@ -1,5 +1,6 @@
 import React from 'react';
 import PromotionAnimation from './Animation';
+import Enroll from './Enroll';
 
 const Promotion = () => {
     return (
@@ -8,6 +9,7 @@ const Promotion = () => {
                 <PromotionAnimation>
 
                 </PromotionAnimation>
+                <Enroll />
             </div>
         </div>
     );
