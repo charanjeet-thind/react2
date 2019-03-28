@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import Fade from 'react-reveal';
-import FormField from '../../ui/formFields'; 
-import {validate} from '../../ui/misc';
-import {firebasePromotions} from '../../../firebase';
+import FormField from '../ui/formFields'; 
+import {validate} from '../ui/misc';
+import { firebase } from '../../firebase';
 
-class Enroll extends Component {
+class SignIn extends Component {
     state={
         formError:false,
         formSuccess: '',
@@ -20,6 +19,20 @@ class Enroll extends Component {
                 validation:{
                      required:true,
                      email:true
+                },
+                valid:false,
+                validationMessage:''
+            },
+            password:{
+                element:'input',
+                value:'',
+                config:{
+                    name:'password',
+                    type:'password',
+                    placeholder:'Enter your password'
+                },
+                validation:{
+                     required:true
                 },
                 valid:false,
                 validationMessage:''
@@ -45,20 +58,6 @@ class Enroll extends Component {
         })
     }
 
-    resetFormSuccess(type){
-        const newFormdata = {...this.state.formdata}
-        for(let key in newFormdata){
-            newFormdata[key].value='';
-            newFormdata[key].valid=false;
-            newFormdata[key].validationMessage='';
-        }
-        this.setState({
-            formError:false,
-            formdata:newFormdata,
-            formSuccsess:type?'Congratulations':'Already on the database'
-        })
-    }
-
     submitForm(event){
         event.preventDefault();
         let dataToSubmit = {};
@@ -69,16 +68,7 @@ class Enroll extends Component {
         }
 
         if(formIsValid){
-            firebasePromotions.orderByChild('email').equalTo(dataToSubmit.email).once("value")
-            .then((snapshot)=>{
-                if(snapshot.val() === null){
-                    firebasePromotions.push(dataToSubmit);
-                    this.resetFormSuccess(true);
-                }else{
-                    this.resetFormSuccess(false);
-                }
-                console.log(snapshot.val());
-            });
+           
             console.log(dataToSubmit);
             
         }else{
@@ -92,28 +82,28 @@ class Enroll extends Component {
 
     render() {
         return (
-            <Fade>
-                <div className="enroll_wrapper">
-                    <form onSubmit={(event)=>this.submitForm(event) } >
-                        <div className="enroll_title">
-                            Enter your email
-                        </div>
-                        <div className="enroll_input">
-                            <FormField 
+            <div className="container">
+                <div className="signin_wrapper" style={{margin:"100px"}}>
+                    <form onSubmit={(event)=>this.submitForm(event)}>
+                        <h2>Please Login</h2>
+                        <FormField 
                                 id={'email'}
                                 formdata={this.state.formdata.email}
                                 change={(element)=>this.updateForm(element)}
                                 
-                            />
-                            {this.state.formError?<div className="error_label">Something is wrong, try again</div>:null}
-                            <div className="success_label">{this.state.formSuccsess}</div>
-                            <button OnClick={(event)=>this.submitForm(event)}>Enroll</button>
-                        </div>
+                        />
+                        <FormField 
+                                id={'password'}
+                                formdata={this.state.formdata.password}
+                                change={(element)=>this.updateForm(element)}
+                                
+                        />
+                        <button OnClick={(event)=>this.submitForm(event)}>Login</button>
                     </form>
                 </div>
-            </Fade>
+            </div>
         );
     }
 }
 
-export default Enroll;
+export default SignIn;
